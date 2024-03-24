@@ -8,21 +8,46 @@ TOKEN = ENV['DISCORD_BOT_TOKEN']
 MEMBERS = ENV['MEMBERS'].split(',')
 CHANNEL = '#bot'
 
+ADMIN_COMMANDS = %w(start stop)
+STD_COMMANDS = %w(status)
+
 bot = Discordrb::Bot.new token: TOKEN
+server = Server.new
 
 puts "This bot's invite URL is #{bot.invite_url}"
 puts 'Click on it to invite it to your server.'
+
+bot.message(in: CHANNEL) do |event|
+  message = event.message.content
+
+  if STD_COMMANDS.include?(message)
+    res = case event.message.content
+      when 'status' then server.status
+    end
+
+    event.respond res
+  end
+end
+
 bot.message(from: MEMBERS, in: CHANNEL) do |event|
-  p event
-  event.respond "Event handler was activated!"
+  message = event.message.content
+
+  if ADMIN_COMMANDS.include?(message)
+    res = case message
+      when 'start' then server.invoke
+      when 'stop'  then server.stop
+    end
+
+    event.respond res
+  end
 end
 
 bot.message(from: not!(MEMBERS), in: CHANNEL) do |event|
-  event.respond 'Only authorized members can control my server.'
-end
+  message = event.message.content
 
-bot.message(content: 'Ping!') do |event|
-  event.respond 'Pong!'
+  if ADMIN_COMMANDS.include?(message)
+    event.respond 'Only authorized members can operate my server.'
+  end
 end
 
 bot.run
