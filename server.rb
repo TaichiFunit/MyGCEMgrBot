@@ -9,15 +9,16 @@ class Server
       invoke: endpoints[:invoke] || ENV['INVOKE_ENDPOINT'],
       stop: endpoints[:stop] || ENV['STOP_ENDPOINT'],
     }
-
   end
 
   def invoke
-    self.http_post @action_endpoints[:invoke]
+    res = self.http_post @action_endpoints[:invoke]
+    res.code
   end
 
   def stop
-    self.http_post @action_endpoints[:stop]
+    res = self.http_post @action_endpoints[:stop]
+    res.code
   end
 
   def status
