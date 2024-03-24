@@ -1,5 +1,6 @@
 require 'discordrb'
 require 'dotenv'
+require './server.rb'
 
 Dotenv.load('./.env')
 
