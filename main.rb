@@ -6,7 +6,7 @@ Dotenv.load('./.env')
 
 TOKEN = ENV['DISCORD_BOT_TOKEN']
 MEMBERS = ENV['MEMBERS'].split(',')
-CHANNEL = '#bot'
+CHANNEL = ENV.fetch('CHANNEL', '#pal-bot')
 
 ADMIN_COMMANDS = %w(start stop)
 STD_COMMANDS = %w(status)
