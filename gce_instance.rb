@@ -3,7 +3,7 @@ require 'uri'
 require 'json'
 
 class GCEInstance
-  def initialize project_id:, zone:, instance_id: 
+  def initialize project_id: ENV['PROJECT_ID'], zone: ENV['ZONE'], instance_id: ENV['INSTANCE_ID']
     @project_id = project_id
     @zone = zone
     @instance_id = instance_id
