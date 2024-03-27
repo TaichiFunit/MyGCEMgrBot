@@ -1,6 +1,6 @@
 require 'discordrb'
 require 'dotenv'
-require './gce_instance.rb'
+require './lib/gce_instance.rb'
 
 Dotenv.load('./.env')
 

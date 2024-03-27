@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require './gce_instance.rb'
+require './lib/gce_instance.rb'
 require 'dotenv'
 
 Dotenv.load('./.env')
@@ -16,7 +16,13 @@ describe GCEInstance do
   describe '#status' do
     it 'must have valid status' do
       VALID_STATUS = %w(PROVISIONING STAGING RUNNING STOPPING SUSPENDING SUSPENDED REPAIRING TERMINATED)
-      assert_includes VALID_STATUS, @instance.status
+      assert_includes VALID_STATUS, @instance.get['status']
+    end
+  end
+
+  describe '#backup' do
+    it 'must success' do
+#      @instnace.disk.backup
     end
   end
 end

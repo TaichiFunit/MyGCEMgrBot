@@ -1,18 +1,16 @@
-require 'net/http'
-require 'uri'
-require 'json'
+require './lib/api_base.rb'
 
-class GCEInstance
+class GCEInstance < APIBase
   def initialize project_id: ENV['PROJECT_ID'], zone: ENV['ZONE'], instance_id: ENV['INSTANCE_ID']
     @project_id = project_id
     @zone = zone
     @instance_id = instance_id
   end
 
-  def status
+  def get
     # https://cloud.google.com/compute/docs/reference/rest/v1/instances/get
     res = http_get api_endpoint
-    res[:body]['status']
+    res[:body]
   end
 
   def start
@@ -29,33 +27,7 @@ class GCEInstance
 
   private
 
-  def fetch_access_token
-    `gcloud auth print-access-token`.strip
-  end
-
   def api_endpoint
     "https://compute.googleapis.com/compute/v1/projects/#{@project_id}/zones/#{@zone}/instances/#{@instance_id}"
-  end
-
-  def http(klass, uri)
-    uri = URI.parse uri
-    https = Net::HTTP.new(uri.host, uri.port)
-    https.use_ssl = true
-
-    req = klass.new uri.path
-
-    req['Authorization'] = "Bearer #{fetch_access_token}"
-    req['Content-Type'] = 'application/json'
-
-    res = https.request req
-    { code: res.code, body: JSON.parse(res.body) }
-  end
-
-  def http_get(uri)
-    http Net::HTTP::Get, uri
-  end
-
-  def http_post(uri)
-    http Net::HTTP::Post, uri
   end
 end
