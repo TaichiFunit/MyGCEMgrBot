@@ -1,0 +1,29 @@
+main:
+  params: []
+  steps:
+    - init:
+        assign:
+          - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - zone: ${sys.get_env("ZONE")}
+          - instance_name: ${sys.get_env("INSTANCE_NAME")}
+    - get_instance:
+        call: googleapis.compute.v1.instances.get
+        args:
+          instance: ${instance_name}
+          project: ${project}
+          zone: ${zone}
+        result: instance_status
+    - start_machine_if_machine_is_terminated:
+        switch:
+            - condition: ${instance_status.status != "RUNNING"}
+              next: start_machine
+        next: the_end
+    - start_machine:
+        call: googleapis.compute.v1.instances.start
+        args:
+          instance: ${instance_name}
+          project: ${project}
+          zone: ${zone}
+    - the_end:
+        return: "SUCCESS"
+
