@@ -1,6 +1,6 @@
 require 'discordrb'
 require 'dotenv'
-require './server.rb'
+require './gce_instance.rb'
 
 Dotenv.load('./.env')
 
@@ -12,7 +12,7 @@ ADMIN_COMMANDS = %w(start stop)
 STD_COMMANDS = %w(status)
 
 bot = Discordrb::Bot.new token: TOKEN
-server = Server.new
+instance = GCEInstance.new
 
 puts "This bot's invite URL is #{bot.invite_url}"
 puts 'Click on it to invite it to your server.'
