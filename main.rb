@@ -22,7 +22,7 @@ bot.message(in: CHANNEL) do |event|
 
   if STD_COMMANDS.include?(message)
     res = case event.message.content
-      when 'status' then server.status
+      when 'status' then instance.get['status']
     end
 
     event.respond res
@@ -34,8 +34,8 @@ bot.message(from: MEMBERS, in: CHANNEL) do |event|
 
   if ADMIN_COMMANDS.include?(message)
     res = case message
-      when 'start' then server.invoke
-      when 'stop'  then server.stop
+      when 'start' then instance.start
+      when 'stop'  then instance.stop
     end
 
     event.respond res
