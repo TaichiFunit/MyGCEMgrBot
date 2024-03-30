@@ -8,9 +8,9 @@ PROJECT_ID = ENV['PROJECT_ID']
 ZONE = ENV['ZONE']
 INSTANCE_ID = ENV['INSTANCE_ID']
 
-describe GCEInstance do
+describe Snapshot do
   before do
-    @instance = GCEInstance.new project_id: PROJECT_ID, zone: ZONE, instance_id: INSTANCE_ID
+    @instance =Snapshot.new project_id: PROJECT_ID
   end
 
   describe '#status' do
